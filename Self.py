@@ -15,3 +15,18 @@ car1 = Car("Toyota", "Corolla")
 
 # Call the display method
 print(car1.display())
+
+
+########################################################################
+class gfg:
+    def __init__(self, topic):
+        self._topic = topic  # Store parameter value in instance variable
+
+    def topic(self):
+        print("Topic:", self._topic)  # Access the renamed variable
+
+# Creating an instance of gfg
+ins = gfg("Python")
+
+# Calling the topic method
+ins.topic()
