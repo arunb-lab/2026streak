@@ -1,0 +1,24 @@
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+exclude = [
+  ".git",
+  ".venv",
+  "venv",
+  "__pycache__",
+  ".pytest_cache",
+  ".ruff_cache",
+
+  # This repo contains a root file named file.py that is not valid Python.
+  "file.py",
+
+  # Directory names used for experiments / nonstandard naming.
+  "SnakeGame ",
+  "Dictonaries",
+]
+
+[tool.ruff.lint]
+select = ["E", "F"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
