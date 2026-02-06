@@ -1,5 +1,7 @@
 # 2026streak
 
+![CI](https://github.com/arunb-lab/2026streak/actions/workflows/ci.yml/badge.svg)
+
 A personal learning / practice repository for Python exercises and small projects.
 
 This repo is intentionally a collection of small scripts rather than a single installable package.
@@ -7,7 +9,9 @@ This repo is intentionally a collection of small scripts rather than a single in
 ## Structure
 
 - `basic_Python/` — small Python practice scripts (classes, loops, recursion, etc.)
-- `project/` — project work (WIP)
+- `project/` — small "resume-ready" modules + mini-CLIs (typed + tested)
+  - `project/date_range.py` — date range utilities (overlap, intersection, merge)
+  - `project/date_range_cli.py` — tiny CLI to count days / business days
 - `if-statement/` — practice snippets (WIP)
 - `SnakeGame /` — game experiments (note: directory name contains a trailing space)
 - `Dictonaries/` — notes/data (WIP)
@@ -25,7 +29,12 @@ From the repo root:
 python basic_Python/area.py
 ```
 
-Most scripts are standalone. If a script prints output immediately when run, that’s expected.
+## Run the DateRange CLI
+
+```bash
+python -m project.date_range_cli 2026-01-01..2026-01-31
+python -m project.date_range_cli 2026-01-01..2026-01-31 --business-days
+```
 
 ## Development (optional)
 
