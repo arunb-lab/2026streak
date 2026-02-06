@@ -85,6 +85,41 @@ class DateRange:
 
         return sum(1 for d in self.iter_days() if d.weekday() < 5)
 
+    def shift(self, *, days: int = 0) -> "DateRange":
+        """Return a new range shifted by N days."""
+
+        delta = timedelta(days=days)
+        return DateRange(self.start + delta, self.end + delta, self.inclusive_end)
+
+    def split(self, *, chunk_days: int) -> list["DateRange"]:
+        """Split into consecutive chunks.
+
+        Example:
+            DateRange(2026-01-01..2026-01-05).split(chunk_days=2)
+            => [1..2, 3..4, 5..5]
+
+        Args:
+            chunk_days: Size of each chunk in days (must be > 0).
+
+        Returns:
+            A list of DateRange chunks.
+        """
+
+        if chunk_days <= 0:
+            raise ValueError("chunk_days must be > 0")
+
+        out: list[DateRange] = []
+        cur = self.start
+        end_excl = self.end_exclusive
+        step = timedelta(days=chunk_days)
+
+        while cur < end_excl:
+            nxt = min(cur + step, end_excl)
+            out.append(DateRange(cur, nxt - timedelta(days=1), inclusive_end=True))
+            cur = nxt
+
+        return out
+
     def overlaps(self, other: "DateRange") -> bool:
         """Return True if two ranges share at least one date."""
 
@@ -126,7 +161,10 @@ class DateRange:
 
 
 def merge_overlapping(ranges: Iterable[DateRange]) -> list[DateRange]:
-    """Merge overlapping or touching ranges."""
+    """Merge overlapping or touching ranges.
+
+    "Touching" means one range ends the day before another begins.
+    """
 
     normalized = [
         (r if r.inclusive_end else DateRange(r.start, r.end - timedelta(days=1)))

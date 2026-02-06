@@ -1,13 +1,20 @@
+from __future__ import annotations
+
+import math
+
+
 class Circle:
-    def __init__(self, r):
+    """Circle helper used in basic OOP exercises."""
+
+    def __init__(self, r: float) -> None:
+        if r < 0:
+            raise ValueError("radius must be non-negative")
         self.r = r
 
-    def area(self):
-        a = 3.14 * self.r ** 2
-        return a
+    def area(self) -> float:
+        return math.pi * (self.r**2)
 
-# Creating an instance of Circle
-ins = Circle(5)
 
-# Calling the area method
-print("Area of the circle:", ins.area())
+if __name__ == "__main__":
+    ins = Circle(5)
+    print("Area of the circle:", ins.area())

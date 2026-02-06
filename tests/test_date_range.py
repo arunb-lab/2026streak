@@ -37,6 +37,26 @@ def test_business_days() -> None:
     assert r.business_days() == 2
 
 
+def test_shift() -> None:
+    r = DateRange(date(2026, 1, 1), date(2026, 1, 3))
+    shifted = r.shift(days=2)
+    assert shifted.start == date(2026, 1, 3)
+    assert shifted.end == date(2026, 1, 5)
+
+
+def test_split_into_chunks() -> None:
+    r = DateRange(date(2026, 1, 1), date(2026, 1, 5))
+    chunks = r.split(chunk_days=2)
+    assert [c.to_iso() for c in chunks] == [
+        "2026-01-01..2026-01-02",
+        "2026-01-03..2026-01-04",
+        "2026-01-05..2026-01-05",
+    ]
+
+    with pytest.raises(ValueError):
+        r.split(chunk_days=0)
+
+
 def test_overlap_and_intersection() -> None:
     a = DateRange(date(2026, 1, 1), date(2026, 1, 10))
     b = DateRange(date(2026, 1, 5), date(2026, 1, 20))
