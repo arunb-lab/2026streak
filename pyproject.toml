@@ -15,6 +15,22 @@ exclude = [
   # Directory names used for experiments / nonstandard naming.
   "SnakeGame ",
   "Dictonaries",
+
+  # Some practice files contain notes / partial code and aren't valid Python.
+  "basic_Python/100daysenforecer.py",
+  "basic_Python/Tuple.py",
+  "basic_Python/encryption.py",
+
+  # Linting these doesn't add much value (mostly comment-heavy learning notes).
+  "basic_Python/Recursion.py",
+  "basic_Python/Self.py",
+  "basic_Python/conditional2.py",
+  "basic_Python/controlflow.py",
+  "basic_Python/elif.py",
+  "basic_Python/pythonxpgame.py",
+  "basic_Python/studytimer.py",
+  "basic_Python/toppinglist.py",
+  "basic_Python/variable.py",
 ]
 
 [tool.ruff.lint]
