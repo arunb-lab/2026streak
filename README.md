@@ -12,6 +12,7 @@ This repo is intentionally a collection of small scripts rather than a single in
 - `project/` — small "resume-ready" modules + mini-CLIs (typed + tested)
   - `project/date_range.py` — date range utilities (overlap, intersection, merge)
   - `project/date_range_cli.py` — tiny CLI to count days / business days
+  - `project/api.py` — FastAPI mini-service exposing the same logic via HTTP
 - `if-statement/` — practice snippets (WIP)
 - `SnakeGame /` — game experiments (note: directory name contains a trailing space)
 - `Dictonaries/` — notes/data (WIP)
@@ -34,7 +35,31 @@ python basic_Python/area.py
 ```bash
 python -m project.date_range_cli 2026-01-01..2026-01-31
 python -m project.date_range_cli 2026-01-01..2026-01-31 --business-days
+python -m project.date_range_cli 2026-01-01..2026-01-31 --split 7
+python -m project.date_range_cli 2026-01-01..2026-01-31 --shift-days 1
 ```
+
+## Run the FastAPI mini-service
+
+Install requirements:
+
+```bash
+python -m pip install fastapi uvicorn httpx
+```
+
+Run locally:
+
+```bash
+uvicorn project.api:app --reload
+```
+
+Try it:
+
+- Health: http://127.0.0.1:8000/health
+- Docs (Swagger): http://127.0.0.1:8000/docs
+- Example:
+  - http://127.0.0.1:8000/daterange/info?range=2026-01-01..2026-01-31
+  - http://127.0.0.1:8000/daterange/split?range=2026-01-01..2026-01-31&chunk_days=7
 
 ## Development (optional)
 
