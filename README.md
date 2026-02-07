@@ -35,6 +35,8 @@ python basic_Python/area.py
 ```bash
 python -m project.date_range_cli 2026-01-01..2026-01-31
 python -m project.date_range_cli 2026-01-01..2026-01-31 --business-days
+python -m project.date_range_cli 2026-01-01..2026-01-31 --business-days --holiday 2026-01-01 --holiday 2026-01-13
+python -m project.date_range_cli 2026-01-01..2026-01-31 --business-days --holidays-file holidays.txt
 python -m project.date_range_cli 2026-01-01..2026-01-31 --split 7
 python -m project.date_range_cli 2026-01-01..2026-01-31 --shift-days 1
 ```
@@ -59,6 +61,7 @@ Try it:
 - Docs (Swagger): http://127.0.0.1:8000/docs
 - Example:
   - http://127.0.0.1:8000/daterange/info?range=2026-01-01..2026-01-31
+  - http://127.0.0.1:8000/daterange/info?range=2026-01-01..2026-01-31&business_days=true&holidays=2026-01-01,2026-01-13
   - http://127.0.0.1:8000/daterange/split?range=2026-01-01..2026-01-31&chunk_days=7
 
 ## Development (optional)
