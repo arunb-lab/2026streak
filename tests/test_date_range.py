@@ -37,6 +37,12 @@ def test_business_days() -> None:
     assert r.business_days() == 2
 
 
+def test_business_days_excluding_holidays() -> None:
+    r = DateRange(date(2026, 1, 1), date(2026, 1, 4))
+    # Exclude Friday => only Thursday counts.
+    assert r.business_days(holidays=[date(2026, 1, 2)]) == 1
+
+
 def test_shift() -> None:
     r = DateRange(date(2026, 1, 1), date(2026, 1, 3))
     shifted = r.shift(days=2)

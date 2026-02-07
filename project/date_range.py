@@ -80,10 +80,19 @@ class DateRange:
             yield cur
             cur += timedelta(days=1)
 
-    def business_days(self) -> int:
-        """Count Mon–Fri days in the range."""
+    def business_days(self, *, holidays: Iterable[date] | None = None) -> int:
+        """Count Mon–Fri days in the range.
 
-        return sum(1 for d in self.iter_days() if d.weekday() < 5)
+        Args:
+            holidays: Optional iterable of dates to exclude from the business-day
+                count (e.g., public holidays). Holidays that fall on weekends
+                have no effect.
+        """
+
+        holiday_set = set(holidays or [])
+        return sum(
+            1 for d in self.iter_days() if d.weekday() < 5 and d not in holiday_set
+        )
 
     def shift(self, *, days: int = 0) -> "DateRange":
         """Return a new range shifted by N days."""
