@@ -12,6 +12,8 @@ This is intentionally minimal, but demonstrates argparse + tested core logic.
 from __future__ import annotations
 
 import argparse
+from datetime import date
+from pathlib import Path
 
 from project.date_range import DateRange
 
@@ -24,6 +26,20 @@ def build_parser() -> argparse.ArgumentParser:
         "--business-days",
         action="store_true",
         help="Count only weekdays (Mon–Fri)",
+    )
+    p.add_argument(
+        "--holiday",
+        action="append",
+        default=[],
+        metavar="YYYY-MM-DD",
+        help="Exclude a holiday date (repeatable)",
+    )
+    p.add_argument(
+        "--holidays-file",
+        type=Path,
+        default=None,
+        metavar="PATH",
+        help="Path to a file with one YYYY-MM-DD per line (blank lines/# comments ok)",
     )
     p.add_argument(
         "--shift-days",
@@ -41,6 +57,22 @@ def build_parser() -> argparse.ArgumentParser:
     return p
 
 
+def _parse_holidays(holiday_args: list[str], holidays_file: Path | None) -> set[date]:
+    holidays: set[date] = set()
+
+    for s in holiday_args:
+        holidays.add(date.fromisoformat(s.strip()))
+
+    if holidays_file is not None:
+        for line in holidays_file.read_text(encoding="utf-8").splitlines():
+            raw = line.strip()
+            if not raw or raw.startswith("#"):
+                continue
+            holidays.add(date.fromisoformat(raw))
+
+    return holidays
+
+
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     r = DateRange.from_iso(args.range).shift(days=args.shift_days)
@@ -51,7 +83,8 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     if args.business_days:
-        print(r.business_days())
+        holidays = _parse_holidays(args.holiday, args.holidays_file)
+        print(r.business_days(holidays=holidays))
     else:
         print(r.days())
     return 0
