@@ -13,6 +13,7 @@ Then open:
 
 from __future__ import annotations
 
+from datetime import date
 from typing import Any
 
 from fastapi import FastAPI, Query
@@ -27,20 +28,44 @@ def health() -> dict[str, str]:
     return {"status": "ok"}
 
 
+def _parse_holidays_csv(raw: str | None) -> set[date]:
+    if raw is None or not raw.strip():
+        return set()
+    out: set[date] = set()
+    for part in raw.split(","):
+        p = part.strip()
+        if not p:
+            continue
+        out.add(date.fromisoformat(p))
+    return out
+
+
 @app.get("/daterange/info")
 def daterange_info(
     range: str = Query(..., description="YYYY-MM-DD..YYYY-MM-DD"),
     business_days: bool = Query(False, description="Count only Mon–Fri"),
     shift_days: int = Query(0, description="Shift the range by N days"),
+    holidays: str | None = Query(
+        None,
+        description="Comma-separated YYYY-MM-DD dates to exclude from business day count",
+        examples=["2026-01-01,2026-01-02"],
+    ),
 ) -> dict[str, Any]:
     r = DateRange.from_iso(range).shift(days=shift_days)
-    count = r.business_days() if business_days else r.days()
+    holiday_set = _parse_holidays_csv(holidays)
+
+    bd = r.business_days()
+    bd_ex = r.business_days(holidays=holiday_set)
+    count = bd_ex if business_days else r.days()
+
     return {
         "range": r.to_iso(),
         "start": r.start.isoformat(),
         "end": r.end.isoformat(),
         "days": r.days(),
-        "business_days": r.business_days(),
+        "business_days": bd,
+        "holidays": sorted(d.isoformat() for d in holiday_set),
+        "business_days_excluding_holidays": bd_ex,
         "count": count,
     }
 

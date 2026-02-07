@@ -20,6 +20,7 @@ def test_daterange_info_days() -> None:
     assert data["range"] == "2026-01-01..2026-01-04"
     assert data["days"] == 4
     assert data["business_days"] == 2
+    assert data["business_days_excluding_holidays"] == 2
     assert data["count"] == 4
 
 
@@ -37,6 +38,23 @@ def test_daterange_info_business_days_and_shift() -> None:
     data = r.json()
     assert data["range"] == "2026-01-02..2026-01-05"
     assert data["count"] == 2
+
+
+def test_daterange_info_business_days_with_holidays() -> None:
+    client = TestClient(app)
+    r = client.get(
+        "/daterange/info",
+        params={
+            "range": "2026-01-01..2026-01-04",
+            "business_days": True,
+            "holidays": "2026-01-02",
+        },
+    )
+    assert r.status_code == 200
+    data = r.json()
+    assert data["business_days"] == 2
+    assert data["business_days_excluding_holidays"] == 1
+    assert data["count"] == 1
 
 
 def test_daterange_split() -> None:
