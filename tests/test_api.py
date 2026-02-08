@@ -84,3 +84,13 @@ def test_heatmap_svg_endpoint() -> None:
     assert r.status_code == 200
     assert r.headers["content-type"].startswith("image/svg+xml")
     assert r.text.count("<rect") == 3
+
+
+def test_heatmap_demo_endpoint() -> None:
+    client = TestClient(app)
+    r = client.get(
+        "/heatmap/demo",
+        params={"start": "2026-01-01", "end": "2026-01-07", "seed": 1},
+    )
+    assert r.status_code == 200
+    assert r.text.count("<rect") == 7

@@ -21,6 +21,7 @@ from pydantic import BaseModel, Field
 
 from project.date_range import DateRange
 from project.heatmap import build_heatmap
+from project.heatmap_samples import generate_sample_counts
 from project.heatmap_svg import render_svg
 
 app = FastAPI(title="2026streak Mini API", version="0.2.0")
@@ -121,4 +122,16 @@ def heatmap_data(req: HeatmapRequest) -> dict[str, Any]:
 def heatmap_svg(req: HeatmapRequest) -> Response:
     h = build_heatmap(req.start, req.end, req.counts)
     svg = render_svg(h, title=f"{req.start.isoformat()}..{req.end.isoformat()}")
+    return Response(content=svg, media_type="image/svg+xml")
+
+
+@app.get("/heatmap/demo")
+def heatmap_demo(
+    start: date = Query(date(2026, 1, 1), description="Start date (YYYY-MM-DD)"),
+    end: date = Query(date(2026, 12, 31), description="End date (YYYY-MM-DD)"),
+    seed: int = Query(2026, description="Random seed (deterministic)"),
+) -> Response:
+    counts = generate_sample_counts(start, end, seed=seed)
+    h = build_heatmap(start, end, counts)
+    svg = render_svg(h, title="demo")
     return Response(content=svg, media_type="image/svg+xml")
