@@ -116,3 +116,11 @@ def iter_cells(h: Heatmap) -> Iterable[HeatmapCell]:
         for cell in col:
             if cell is not None:
                 yield cell
+
+
+def weekday_labels(*, sunday_first: bool = True) -> list[str]:
+    """Return weekday labels matching the heatmap row order."""
+
+    if sunday_first:
+        return ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+    return ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
