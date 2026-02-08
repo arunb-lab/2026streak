@@ -47,7 +47,9 @@ def daterange_info(
     shift_days: int = Query(0, description="Shift the range by N days"),
     holidays: str | None = Query(
         None,
-        description="Comma-separated YYYY-MM-DD dates to exclude from business day count",
+        description=(
+            "Comma-separated YYYY-MM-DD dates to exclude from business day count"
+        ),
         examples=["2026-01-01,2026-01-02"],
     ),
 ) -> dict[str, Any]:
