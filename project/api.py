@@ -16,11 +16,14 @@ from __future__ import annotations
 from datetime import date
 from typing import Any
 
-from fastapi import FastAPI, Query
+from fastapi import FastAPI, Query, Response
+from pydantic import BaseModel, Field
 
 from project.date_range import DateRange
+from project.heatmap import build_heatmap
+from project.heatmap_svg import render_svg
 
-app = FastAPI(title="2026streak DateRange API", version="0.1.0")
+app = FastAPI(title="2026streak Mini API", version="0.2.0")
 
 
 @app.get("/health")
@@ -84,3 +87,38 @@ def daterange_split(
         "chunk_days": chunk_days,
         "chunks": [c.to_iso() for c in chunks],
     }
+
+
+class HeatmapRequest(BaseModel):
+    start: date = Field(..., description="Start date (YYYY-MM-DD)")
+    end: date = Field(..., description="End date (YYYY-MM-DD)")
+    counts: dict[date, int] = Field(
+        default_factory=dict,
+        description="Mapping of date -> count",
+        examples=[{"2026-01-01": 3, "2026-01-02": 0, "2026-01-03": 7}],
+    )
+
+
+@app.post("/heatmap/data")
+def heatmap_data(req: HeatmapRequest) -> dict[str, Any]:
+    h = build_heatmap(req.start, req.end, req.counts)
+    # Flattened list is easier to consume in clients.
+    cells = [
+        {"date": c.day.isoformat(), "count": c.count}
+        for col in h.weeks
+        for c in col
+        if c is not None
+    ]
+    return {
+        "start": req.start.isoformat(),
+        "end": req.end.isoformat(),
+        "weeks": h.width,
+        "cells": cells,
+    }
+
+
+@app.post("/heatmap/svg")
+def heatmap_svg(req: HeatmapRequest) -> Response:
+    h = build_heatmap(req.start, req.end, req.counts)
+    svg = render_svg(h, title=f"{req.start.isoformat()}..{req.end.isoformat()}")
+    return Response(content=svg, media_type="image/svg+xml")
