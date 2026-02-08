@@ -13,6 +13,7 @@ This repo is intentionally a collection of small scripts rather than a single in
   - `project/date_range.py` — date range utilities (overlap, intersection, merge)
   - `project/date_range_cli.py` — tiny CLI to count days / business days
   - `project/api.py` — FastAPI mini-service exposing the same logic via HTTP
+  - `project/heatmap.py` + `project/heatmap_svg.py` — GitHub-style contribution heatmap generator
 - `if-statement/` — practice snippets (WIP)
 - `SnakeGame /` — game experiments (note: directory name contains a trailing space)
 - `Dictonaries/` — notes/data (WIP)
@@ -39,6 +40,24 @@ python -m project.date_range_cli 2026-01-01..2026-01-31 --business-days --holida
 python -m project.date_range_cli 2026-01-01..2026-01-31 --business-days --holidays-file holidays.txt
 python -m project.date_range_cli 2026-01-01..2026-01-31 --split 7
 python -m project.date_range_cli 2026-01-01..2026-01-31 --shift-days 1
+```
+
+## Heatmap demo (SVG)
+
+A tiny no-deps generator that produces a GitHub-like contribution grid as SVG.
+
+![Heatmap demo](assets/heatmap-demo.svg)
+
+Generate the demo SVG:
+
+```bash
+.venv/bin/python scripts/generate_demo_heatmap.py
+```
+
+Generate your own from a JSON date->count mapping:
+
+```bash
+python -m project.heatmap_cli --counts counts.json --last-days 365 --out heatmap.svg
 ```
 
 ## Run the FastAPI mini-service
