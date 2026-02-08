@@ -78,10 +78,19 @@ Try it:
 
 - Health: http://127.0.0.1:8000/health
 - Docs (Swagger): http://127.0.0.1:8000/docs
-- Example:
-  - http://127.0.0.1:8000/daterange/info?range=2026-01-01..2026-01-31
-  - http://127.0.0.1:8000/daterange/info?range=2026-01-01..2026-01-31&business_days=true&holidays=2026-01-01,2026-01-13
-  - http://127.0.0.1:8000/daterange/split?range=2026-01-01..2026-01-31&chunk_days=7
+
+DateRange endpoints:
+- http://127.0.0.1:8000/daterange/info?range=2026-01-01..2026-01-31
+- http://127.0.0.1:8000/daterange/info?range=2026-01-01..2026-01-31&business_days=true&holidays=2026-01-01,2026-01-13
+- http://127.0.0.1:8000/daterange/split?range=2026-01-01..2026-01-31&chunk_days=7
+
+Heatmap endpoints:
+- Demo SVG:
+  - http://127.0.0.1:8000/heatmap/demo?start=2026-01-01&end=2026-01-31&seed=1
+- POST JSON -> SVG:
+  - POST http://127.0.0.1:8000/heatmap/svg
+- POST JSON -> data:
+  - POST http://127.0.0.1:8000/heatmap/data
 
 ## Development (optional)
 

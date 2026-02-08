@@ -94,3 +94,18 @@ def test_heatmap_demo_endpoint() -> None:
     )
     assert r.status_code == 200
     assert r.text.count("<rect") == 7
+
+
+def test_heatmap_data_endpoint() -> None:
+    client = TestClient(app)
+    payload = {
+        "start": "2026-01-01",
+        "end": "2026-01-03",
+        "counts": {"2026-01-01": 1, "2026-01-02": 2, "2026-01-03": 3},
+    }
+    r = client.post("/heatmap/data", json=payload)
+    assert r.status_code == 200
+    data = r.json()
+    assert data["days"] == 3
+    assert data["weeks"] >= 1
+    assert data["sunday_first"] is True

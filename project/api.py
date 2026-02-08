@@ -113,7 +113,9 @@ def heatmap_data(req: HeatmapRequest) -> dict[str, Any]:
     return {
         "start": req.start.isoformat(),
         "end": req.end.isoformat(),
+        "sunday_first": h.sunday_first,
         "weeks": h.width,
+        "days": len(cells),
         "cells": cells,
     }
 
