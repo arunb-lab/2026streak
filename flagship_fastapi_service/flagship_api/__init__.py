@@ -1,0 +1,1 @@
+"""Flagship FastAPI service package."""
