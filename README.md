@@ -1,5 +1,9 @@
 # 2026streak
 
+## Flagship project
+
+- `flagship_fastapi_service/` — a small, production-leaning FastAPI microservice (docs + tests).
+
 ![CI](https://github.com/arunb-lab/2026streak/actions/workflows/ci.yml/badge.svg)
 
 A personal learning / practice repository for Python exercises and small projects.
