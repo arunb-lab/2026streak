@@ -20,3 +20,18 @@ class EchoRequest(BaseModel):
 
 class EchoResponse(BaseModel):
     message: str
+
+
+class TodoCreateRequest(BaseModel):
+    title: str = Field(min_length=1, max_length=140)
+
+
+class TodoResponse(BaseModel):
+    id: str
+    title: str
+    done: bool
+    created_at: str
+
+
+class TodoUpdateRequest(BaseModel):
+    done: bool
