@@ -44,13 +44,18 @@ def _cmd_dijkstra(args: argparse.Namespace) -> int:
 
     for i, s in enumerate(steps, start=1):
         d, node = s.popped
-        print(f"step {i:02d} | popped=({d},{node}) | pq_size={s.pq_size} | dist={s.dist_snapshot}")
+        print(
+            f"step {i:02d} | popped=({d},{node}) | pq_size={s.pq_size} "
+            f"| dist={s.dist_snapshot}"
+        )
 
     return 0
 
 
 def build_parser() -> argparse.ArgumentParser:
-    p = argparse.ArgumentParser(prog="dsa-visualizer", description="Trace BFS / Dijkstra step-by-step")
+    p = argparse.ArgumentParser(
+        prog="dsa-visualizer", description="Trace BFS / Dijkstra step-by-step"
+    )
     p.add_argument("--json", action="store_true", help="output trace as JSON")
 
     sub = p.add_subparsers(dest="cmd", required=True)

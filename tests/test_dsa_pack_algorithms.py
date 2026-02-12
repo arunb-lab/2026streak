@@ -1,8 +1,15 @@
 import unittest
 
 from project.dsa_pack.algorithms.binary_search import binary_search, lower_bound
-from project.dsa_pack.algorithms.dijkstra import build_directed_weighted, shortest_path_to
-from project.dsa_pack.algorithms.graph_traversal import bfs_order, build_undirected_graph, dfs_order
+from project.dsa_pack.algorithms.dijkstra import (
+    build_directed_weighted,
+    shortest_path_to,
+)
+from project.dsa_pack.algorithms.graph_traversal import (
+    bfs_order,
+    build_undirected_graph,
+    dfs_order,
+)
 from project.dsa_pack.algorithms.sorting import bubble_sort, merge_sort
 
 

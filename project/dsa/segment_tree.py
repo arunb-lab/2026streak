@@ -49,18 +49,18 @@ class SegmentTreeSum:
         if left < 0 or right_exclusive < left or right_exclusive > self.n:
             raise ValueError("invalid range")
 
-        l = self.size + left
-        r = self.size + right_exclusive
+        left_i = self.size + left
+        right_i = self.size + right_exclusive
         res = 0
 
-        while l < r:
-            if l & 1:
-                res += self.tree[l]
-                l += 1
-            if r & 1:
-                r -= 1
-                res += self.tree[r]
-            l //= 2
-            r //= 2
+        while left_i < right_i:
+            if left_i & 1:
+                res += self.tree[left_i]
+                left_i += 1
+            if right_i & 1:
+                right_i -= 1
+                res += self.tree[right_i]
+            left_i //= 2
+            right_i //= 2
 
         return res

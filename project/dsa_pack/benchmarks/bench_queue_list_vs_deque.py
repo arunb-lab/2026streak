@@ -19,8 +19,12 @@ def bench_deque_queue() -> None:
 
 
 def main() -> None:
-    r1 = run_benchmark("list: append + pop(0)", bench_list_queue, number=20_000, runs=5)
-    r2 = run_benchmark("deque: append + popleft", bench_deque_queue, number=200_000, runs=5)
+    r1 = run_benchmark(
+        "list: append + pop(0)", bench_list_queue, number=20_000, runs=5
+    )
+    r2 = run_benchmark(
+        "deque: append + popleft", bench_deque_queue, number=200_000, runs=5
+    )
     print_result(r1)
     print_result(r2)
 

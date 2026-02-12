@@ -1,11 +1,18 @@
 import unittest
 
-from project.dsa_pack.patterns.prefix_sum import build_prefix, count_subarrays_sum_k, range_sum
+from project.dsa_pack.patterns.prefix_sum import (
+    build_prefix,
+    count_subarrays_sum_k,
+    range_sum,
+)
 from project.dsa_pack.patterns.sliding_window import (
     longest_substring_without_repeats,
     max_sum_subarray_k,
 )
-from project.dsa_pack.patterns.two_pointers import pair_sum_sorted, remove_duplicates_sorted
+from project.dsa_pack.patterns.two_pointers import (
+    pair_sum_sorted,
+    remove_duplicates_sorted,
+)
 
 
 class TestPatterns(unittest.TestCase):

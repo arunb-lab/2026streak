@@ -46,19 +46,19 @@ def longest_substring_k_distinct(s: str, k: int) -> int:
         return 0
 
     freq: Counter[str] = Counter()
-    l = 0
+    left = 0
     best = 0
 
     for r, ch in enumerate(s):
         freq[ch] += 1
 
         while len(freq) > k:
-            left_ch = s[l]
+            left_ch = s[left]
             freq[left_ch] -= 1
             if freq[left_ch] == 0:
                 del freq[left_ch]
-            l += 1
+            left += 1
 
-        best = max(best, r - l + 1)
+        best = max(best, r - left + 1)
 
     return best

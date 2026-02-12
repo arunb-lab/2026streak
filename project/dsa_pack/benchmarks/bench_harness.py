@@ -22,7 +22,9 @@ class BenchResult:
         return statistics.pstdev(self.times)
 
 
-def run_benchmark(name: str, fn: Callable[[], None], *, number: int = 10_000, runs: int = 7) -> BenchResult:
+def run_benchmark(
+    name: str, fn: Callable[[], None], *, number: int = 10_000, runs: int = 7
+) -> BenchResult:
     timer = timeit.Timer(fn)
     times = [timer.timeit(number=number) for _ in range(runs)]
     return BenchResult(name=name, runs=runs, number=number, times=times)
@@ -30,4 +32,7 @@ def run_benchmark(name: str, fn: Callable[[], None], *, number: int = 10_000, ru
 
 def print_result(r: BenchResult) -> None:
     per_call_us = (r.mean / r.number) * 1e6
-    print(f"{r.name}: mean={r.mean:.6f}s (runs={r.runs}, number={r.number}) ~ {per_call_us:.2f}us/call")
+    print(
+        f"{r.name}: mean={r.mean:.6f}s (runs={r.runs}, number={r.number}) "
+        f"~ {per_call_us:.2f}us/call"
+    )

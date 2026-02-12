@@ -3,7 +3,7 @@ from __future__ import annotations
 from collections import deque
 from dataclasses import dataclass
 import heapq
-from typing import Deque, Dict, Iterable, List, Optional, Tuple
+from typing import Deque, Dict, Iterable, List, Tuple
 
 
 def parse_unweighted_edges(items: Iterable[str]) -> List[Tuple[str, str]]:
@@ -63,7 +63,9 @@ class DijkstraTraceStep:
     pq_size: int
 
 
-def dijkstra_trace(edges: List[Tuple[str, str, int]], start: str) -> List[DijkstraTraceStep]:
+def dijkstra_trace(
+    edges: List[Tuple[str, str, int]], start: str
+) -> List[DijkstraTraceStep]:
     """Run Dijkstra and capture step-by-step state (non-negative weights)."""
 
     graph: Dict[str, List[Tuple[str, int]]] = {}
@@ -88,7 +90,11 @@ def dijkstra_trace(edges: List[Tuple[str, str, int]], start: str) -> List[Dijkst
                 heapq.heappush(pq, (nd, nxt))
 
         steps.append(
-            DijkstraTraceStep(popped=(d, node), dist_snapshot=dict(sorted(dist.items())), pq_size=len(pq))
+            DijkstraTraceStep(
+                popped=(d, node),
+                dist_snapshot=dict(sorted(dist.items())),
+                pq_size=len(pq),
+            )
         )
 
     return steps
