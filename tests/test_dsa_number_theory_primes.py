@@ -1,6 +1,10 @@
 import pytest
 
-from project.dsa.number_theory_primes import prime_factors, sieve, smallest_prime_factors
+from project.dsa.number_theory_primes import (
+    prime_factors,
+    sieve,
+    smallest_prime_factors,
+)
 
 
 def test_sieve_small() -> None:
