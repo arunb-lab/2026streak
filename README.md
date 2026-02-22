@@ -96,6 +96,15 @@ Heatmap endpoints:
 - POST JSON -> data:
   - POST http://127.0.0.1:8000/heatmap/data
 
+## DSA
+
+Most of the "clean", typed, test-backed DSA implementations live in:
+- `project/dsa/` (algorithms + data structures)
+- `tests/` (pytest)
+
+If you're doing interview prep, start by browsing `project/dsa/` and then open
+the corresponding `tests/test_dsa_*.py`.
+
 ## Development (optional)
 
 ### Create a virtual environment
@@ -112,7 +121,7 @@ source .venv/bin/activate
 
 ```bash
 python -m pip install -U pip
-python -m pip install pytest ruff
+python -m pip install -r requirements-dev.txt
 ```
 
 ### Run tests
