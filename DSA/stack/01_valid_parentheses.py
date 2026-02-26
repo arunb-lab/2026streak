@@ -4,13 +4,13 @@ Problem:
 Given a string s containing just the characters '(', ')', '{', '}', '[' and ']',
 determine if the input string is valid.
 
-Rules:
-- Open brackets must be closed by the same type of brackets.
-- Open brackets must be closed in the correct order.
+A string is valid if:
+- Open brackets are closed by the same type of brackets.
+- Open brackets are closed in the correct order.
 
-Approach (stack):
-- Push opening brackets
-- On closing bracket, the stack top must match
+Approach:
+Use a stack of opening brackets. When we see a closing bracket, it must match
+the most recent opening bracket.
 
 Time: O(n)
 Space: O(n)
@@ -20,21 +20,24 @@ from __future__ import annotations
 
 
 def is_valid_parentheses(s: str) -> bool:
-    pair = {")": "(",
+    pairs = {")": "(",
         "]": "[",
         "}": "{",
     }
-    stack: list[str] = []
 
+    stack: list[str] = []
     for ch in s:
-        if ch in ("(", "[", "{"):
+        if ch in "([{":
             stack.append(ch)
-        else:
-            if ch not in pair:
-                return False
-            if not stack or stack[-1] != pair[ch]:
+            continue
+
+        if ch in pairs:
+            if not stack or stack[-1] != pairs[ch]:
                 return False
             stack.pop()
+            continue
+
+        raise ValueError(f"invalid character: {ch!r}")
 
     return not stack
 
