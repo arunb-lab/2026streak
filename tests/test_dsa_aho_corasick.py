@@ -7,7 +7,7 @@ def test_aho_corasick_basic_matches() -> None:
 
     # Validate existence of key matches (order may vary by traversal).
     assert (1, 4, "his") in spans
-    assert (3, 5, "she") in spans
+    assert (3, 6, "she") in spans
     assert (4, 6, "he") in spans
     assert (4, 8, "hers") in spans
 
