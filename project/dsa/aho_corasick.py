@@ -83,10 +83,12 @@ class AhoCorasick:
         return res
 
     def find_spans(self, text: str) -> list[tuple[int, int, str]]:
-        """Return list of (start, end, matched_pattern) spans."""
+        """Return list of (start, end_inclusive, matched_pattern) spans."""
 
         out: list[tuple[int, int, str]] = []
-        for end, pi in self.find_all(text):
+        for end_exclusive, pi in self.find_all(text):
             pat = self.patterns[pi]
-            out.append((end - len(pat), end, pat))
+            start = end_exclusive - len(pat)
+            end_inclusive = end_exclusive - 1
+            out.append((start, end_inclusive, pat))
         return out
