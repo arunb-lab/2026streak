@@ -1,137 +1,87 @@
-# 2026streak
+# pyforge
 
-## Flagship project
+A forge for Python projects — a curated collection of small, typed, tested Python services, tools, and algorithms.
 
-- `flagship_fastapi_service/` — a small, production-leaning FastAPI microservice (docs + tests).
+![Python](https://img.shields.io/badge/python-3.10%2B-blue) ![License: MIT](https://img.shields.io/badge/license-MIT-green) ![Lint: ruff](https://img.shields.io/badge/lint-ruff-orange)
 
-![CI](https://github.com/arunb-lab/2026streak/actions/workflows/ci.yml/badge.svg)
+`pyforge` is a mono-repo of self-contained Python projects. Everything here is meant to be readable, deterministic, and covered by tests — from a production-leaning FastAPI service to interview-ready DSA implementations.
 
-A personal learning / practice repository for Python exercises and small projects.
+## Highlights
 
-This repo is intentionally a collection of small scripts rather than a single installable package.
+- **FastAPI service** — an app-factory microservice with typed models, health/version endpoints, and pytest + httpx tests.
+- **DateRange toolkit** — date-range utilities (overlap, intersection, merge, business days) with a CLI and an HTTP API.
+- **Contribution heatmap** — a zero-dependency generator that renders a GitHub-style contribution grid as SVG.
+- **DSA** — clean, typed, test-backed data structures and algorithms for interview prep.
 
-## Structure
+## Repository layout
 
-- `basic_Python/` — small Python practice scripts (classes, loops, recursion, etc.)
-- `project/` — small "resume-ready" modules + mini-CLIs (typed + tested)
-  - `project/date_range.py` — date range utilities (overlap, intersection, merge)
-  - `project/date_range_cli.py` — tiny CLI to count days / business days
-  - `project/api.py` — FastAPI mini-service exposing the same logic via HTTP
-  - `project/heatmap.py` + `project/heatmap_svg.py` — GitHub-style contribution heatmap generator
-- `if-statement/` — practice snippets (WIP)
-- `SnakeGame /` — game experiments (note: directory name contains a trailing space)
-- `Dictonaries/` — notes/data (WIP)
-- `file.py` — **NOT Python**. This appears to be Google Apps Script / JS-like code.
-
-## Requirements
-
-- Python 3.10+ recommended
-
-## Run a script
-
-From the repo root:
-
-```bash
-python basic_Python/area.py
+```text
+pyforge/
+├── src/
+│   ├── fastapi_service/   # production-leaning FastAPI microservice
+│   ├── daterange/         # date-range utilities + CLI + API
+│   └── heatmap/           # SVG contribution-heatmap generator
+├── dsa/                   # data structures & algorithms (typed + tested)
+├── learning/              # beginner practice scripts (kept for history)
+│   ├── basics/
+│   ├── dictionaries/
+│   ├── conditionals/
+│   └── snake_game/
+├── tests/                 # pytest suite
+├── scripts/               # dev helpers (lint + test)
+├── .github/workflows/     # CI
+├── pyproject.toml
+├── requirements-dev.txt
+└── README.md
 ```
 
-## Run the DateRange CLI
+## Quickstart
+
+Requires Python 3.10+.
 
 ```bash
-python -m project.date_range_cli 2026-01-01..2026-01-31
-python -m project.date_range_cli 2026-01-01..2026-01-31 --business-days
-python -m project.date_range_cli 2026-01-01..2026-01-31 --business-days --holiday 2026-01-01 --holiday 2026-01-13
-python -m project.date_range_cli 2026-01-01..2026-01-31 --business-days --holidays-file holidays.txt
-python -m project.date_range_cli 2026-01-01..2026-01-31 --split 7
-python -m project.date_range_cli 2026-01-01..2026-01-31 --shift-days 1
-```
+git clone https://github.com/arunb-lab/pyforge.git
+cd pyforge
 
-## Heatmap demo (SVG)
-
-A tiny no-deps generator that produces a GitHub-like contribution grid as SVG.
-
-![Heatmap demo](assets/heatmap-demo.svg)
-
-Generate the demo SVG:
-
-```bash
-.venv/bin/python scripts/generate_demo_heatmap.py
-```
-
-Generate your own from a JSON date->count mapping:
-
-```bash
-python -m project.heatmap_cli --counts counts.json --last-days 365 --out heatmap.svg
-```
-
-## Run the FastAPI mini-service
-
-Install requirements:
-
-```bash
-python -m pip install fastapi uvicorn httpx
-```
-
-Run locally:
-
-```bash
-uvicorn project.api:app --reload
-```
-
-Try it:
-
-- Health: http://127.0.0.1:8000/health
-- Docs (Swagger): http://127.0.0.1:8000/docs
-
-DateRange endpoints:
-- http://127.0.0.1:8000/daterange/info?range=2026-01-01..2026-01-31
-- http://127.0.0.1:8000/daterange/info?range=2026-01-01..2026-01-31&business_days=true&holidays=2026-01-01,2026-01-13
-- http://127.0.0.1:8000/daterange/split?range=2026-01-01..2026-01-31&chunk_days=7
-
-Heatmap endpoints:
-- Demo SVG:
-  - http://127.0.0.1:8000/heatmap/demo?start=2026-01-01&end=2026-01-31&seed=1
-- POST JSON -> SVG:
-  - POST http://127.0.0.1:8000/heatmap/svg
-- POST JSON -> data:
-  - POST http://127.0.0.1:8000/heatmap/data
-
-## DSA
-
-Most of the "clean", typed, test-backed DSA implementations live in:
-- `project/dsa/` (algorithms + data structures)
-- `tests/` (pytest)
-
-If you're doing interview prep, start by browsing `project/dsa/` and then open
-the corresponding `tests/test_dsa_*.py`.
-
-## Development (optional)
-
-### Create a virtual environment
-
-```bash
 python -m venv .venv
-# Linux/macOS
-source .venv/bin/activate
-# Windows (PowerShell)
-# .venv\Scripts\Activate.ps1
-```
+source .venv/bin/activate        # Windows: .venv\\Scripts\\Activate.ps1
 
-### Install dev tools
-
-```bash
 python -m pip install -U pip
 python -m pip install -r requirements-dev.txt
 ```
 
-### Run tests
+## Running the projects
+
+### FastAPI service
 
 ```bash
-pytest
+python -m pip install fastapi uvicorn httpx
+uvicorn src.fastapi_service.app:create_app --factory --reload
 ```
 
-### Lint
+Then open `http://127.0.0.1:8000/healthz` and `http://127.0.0.1:8000/docs`.
+
+### DateRange CLI
 
 ```bash
-ruff check .
+python -m src.daterange.cli 2026-01-01..2026-01-31
+python -m src.daterange.cli 2026-01-01..2026-01-31 --business-days
+python -m src.daterange.cli 2026-01-01..2026-01-31 --split 7
 ```
+
+### Heatmap (SVG)
+
+```bash
+python -m src.heatmap.cli --counts counts.json --last-days 365 --out heatmap.svg
+```
+
+## Development
+
+```bash
+pytest          # run the test suite
+ruff check .    # lint
+```
+
+## License
+
+Released under the [MIT License](LICENSE).
